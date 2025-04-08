@@ -2,6 +2,7 @@
 
 import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import { useEffect, useState } from "react";
+import Header from "./components/ui/Header";
 
 interface Location {
   latitude: number;
@@ -37,7 +38,9 @@ const GeoLocation = () => {
 
   return (
     <div className="p-4">
-      <GoogleMap
+      <Header />
+      <div>안녕</div>
+      {/* <GoogleMap
         center={{ lat: location?.latitude ?? 0, lng: location?.longitude ?? 0 }}
         zoom={15}
         mapContainerStyle={{ width: "100%", height: "80vh" }}
@@ -48,7 +51,7 @@ const GeoLocation = () => {
             lng: location?.longitude ?? 0,
           }}
         />
-      </GoogleMap>
+      </GoogleMap> */}
     </div>
   );
 };
