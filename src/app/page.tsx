@@ -1,59 +1,42 @@
-"use client"; // Next.js 13+의 App Router 환경에서 클라이언트 컴포넌트임을 명시
-
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
-import { useEffect, useState } from "react";
 import Header from "./components/ui/Header";
+import FullImgesSider from "./components/FullImgesSider";
+import { supabase } from "./lib/supabaseClient";
+import { Template } from "./types/supabase";
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
+export default async function Page() {
+  const { data, error }: { data: Template[] | null; error: unknown } =
+    await supabase
+      .from("template")
+      .select("*")
+      .order("created_at", { ascending: false });
+  console.log({ data });
 
-const GeoLocation = () => {
-  const [location, setLocation] = useState<Location | null>(null);
-  console.log({ location });
-  const [error, setError] = useState<string>();
-  const { isLoaded } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || "",
-  });
+  if (!data || error) {
+    throw Error("에러 발생");
+  }
 
-  useEffect(() => {
-    if (!navigator.geolocation) {
-      setError("Geolocation is not supported by your browser");
-      return;
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-      },
-      (err) => {
-        setError(err.message);
-      }
-    );
-  }, []);
-
-  if (!isLoaded) return <p>Loading...</p>;
+  const images = data
+    ?.filter((item) => item.thumbnail_image_url)
+    .map((item) => ({
+      id: item.id,
+      src: item.thumbnail_image_url!,
+    }));
 
   return (
     <div className="p-4">
       <Header />
-      <div>안녕</div>
-      {/* <GoogleMap
-        center={{ lat: location?.latitude ?? 0, lng: location?.longitude ?? 0 }}
-        zoom={15}
-        mapContainerStyle={{ width: "100%", height: "80vh" }}
-      >
-        <Marker
-          position={{
-            lat: location?.latitude ?? 0,
-            lng: location?.longitude ?? 0,
-          }}
-        />
-      </GoogleMap> */}
+      <div id="content">
+        {/* 슬라이드 */}
+        <div className="flex justify-center items-center w-full my-5">
+          <div className="flex justify-center items-center w-80 h-80">
+            <FullImgesSider images={images} />
+            {/* {data?.map((el) => {
+              
+              return 
+            })} */}
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
-
-export default GeoLocation;
+}
