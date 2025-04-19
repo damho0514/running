@@ -1,70 +1,28 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import { useRouter } from "next/navigation";
-import React, { useState } from "react";
-import MenuIcon from "@mui/icons-material/Menu";
-
-const routes = [
-  {
-    text: "Template",
-    path: "/template",
-    icon: <div />,
-  },
-];
+import Link from "next/link";
 
 export default function Header() {
-  const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const DrawerList = () => (
-    <Box
-      sx={{ width: 250 }}
-      role="presentation"
-      onClick={() => setIsOpen(false)}
-    >
-      <List>
-        {routes.map(({ text, path, icon }) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton
-              onClick={() => {
-                router.push(path);
-                setIsOpen(false);
-              }}
-            >
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
-
   return (
-    <header className="flex flex-col items-center justify-center relative w-full">
-      {/* logo */}
-      <div className="cursor-pointer" onClick={() => router.push("/")}>
-        <div>메인 로고</div>
-      </div>
-
-      {/* drawer */}
-      <div className="absolute right-0">
-        <Button className="text-black" onClick={() => setIsOpen(true)}>
-          <MenuIcon color="inherit" />
-        </Button>
-        <Drawer anchor="right" open={isOpen} onClose={() => setIsOpen(false)}>
-          <DrawerList />
-        </Drawer>
+    <header className="bg-white shadow sticky top-0 z-50">
+      <div className="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <Link href="/" className="text-2xl font-bold text-orange-500">
+          RunTogether
+        </Link>
+        <nav className="space-x-4 text-sm md:text-base">
+          <Link href="/" className="hover:underline">
+            홈
+          </Link>
+          <Link href="/courses" className="hover:underline">
+            코스
+          </Link>
+          <Link href="/community" className="hover:underline">
+            커뮤니티
+          </Link>
+          <Link href="/profile" className="hover:underline">
+            마이페이지
+          </Link>
+        </nav>
       </div>
     </header>
   );
