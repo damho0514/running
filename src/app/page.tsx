@@ -11,7 +11,7 @@ export default async function Page() {
     <HydrationBoundary state={dehydrate(queryClient)}>
       {/* Hero Section */}
       <section className="bg-orange-100 text-center py-12 px-4">
-        <h1 className="text-3xl md:text-5xl font-bold mb-4">
+        <h1 className="text-3xl md:text-5xl font-bold mb-4 text-gray-500">
           오늘도 가볍게, 러닝 한 걸음
         </h1>
         <p className="text-lg text-gray-700 mb-6">
