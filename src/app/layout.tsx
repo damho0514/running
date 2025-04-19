@@ -1,8 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientProvider from "./components/\bClientProvider";
+import ClientProvider from "./components/ClientProvider";
 import Script from "next/script";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import QueryProvider from "./lib/getQueryProvider";
+import Header from "./components/ui/Header";
+import Footer from "./components/ui/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +32,15 @@ export default function RootLayout({
     <html lang="en">
       <body
         suppressHydrationWarning
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased   flex flex-col min-h-screen `}
       >
-        <main id="container">
-          <ClientProvider>{children}</ClientProvider>
+        <Header />
+        <main className="flex-grow">
+          <QueryProvider>
+            <ClientProvider>{children}</ClientProvider>
+          </QueryProvider>
         </main>
-        <Script
-          strategy="lazyOnload"
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6259211983819798"
-          crossOrigin="anonymous"
-        />
+        <Footer />
       </body>
     </html>
   );
