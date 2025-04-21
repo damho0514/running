@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ClientProvider from "./components/ClientProvider";
-import Script from "next/script";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 import QueryProvider from "./lib/getQueryProvider";
 import Header from "./components/ui/Header";
 import Footer from "./components/ui/Footer";
@@ -35,7 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased   flex flex-col min-h-screen `}
       >
         <Header />
-        <main className="flex-grow">
+        <main className="flex-grow px-4 py-10 ">
           <QueryProvider>
             <ClientProvider>{children}</ClientProvider>
           </QueryProvider>

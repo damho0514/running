@@ -1,5 +1,6 @@
 import React from "react";
 import { Card } from "../Card/Card";
+import { Template } from "@/app/types/supabase";
 
 const mockData = [
   {
@@ -64,16 +65,25 @@ const mockData = [
   },
 ];
 
-function FeedCard() {
+type FeedCardProps = {
+  data: {
+    created_at: string;
+    description: string;
+    id: number;
+    name: string;
+    thumbnail_image_url: string;
+  }[];
+};
+function FeedCard({ data }: FeedCardProps) {
   return (
     // TODO: 마이페이지에서 게시물 올리기 -> 올린 게시물 조회 되는 카드로 생각.
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 pl-10 pr-10">
-      {mockData.map((item, index) => (
+      {data.map((item, index) => (
         <Card
           key={index}
-          // username={item.username}
+          username={item.name}
           // likes={item.likes}
-          // imageUrl={item.imageUrl}
+          imageUrl={item.thumbnail_image_url ?? ""}
         />
       ))}
     </div>

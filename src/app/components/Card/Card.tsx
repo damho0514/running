@@ -1,30 +1,67 @@
 import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Pencil, Trash } from "lucide-react";
 
-type CardProps = {
-  username?: string;
-  likes?: number;
-  imageUrl?: string;
-};
+interface CardProps {
+  post: {
+    id: string;
+    image_url: string;
+    tags: string[];
+    song?: string;
+    description?: string;
+  };
+  onEdit: () => void;
+  onDelete: () => void;
+}
 
-export function Card({ username, likes, imageUrl }: CardProps) {
+export function Card({ post, onEdit, onDelete }: CardProps) {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200">
+    <div className="bg-white shadow-md rounded-xl overflow-hidden max-w-sm border border-gray-200 relative">
       <Image
-        src={imageUrl ?? ""}
-        alt={username ?? ""}
-        className="w-full aspect-[4/5] object-cover"
+        src={post.image_url}
+        alt="러닝 이미지"
+        width={400}
+        height={400}
+        className="object-cover w-full aspect-[4/5]"
       />
-      <div className="p-2 flex items-center justify-between text-sm text-gray-600">
-        <div className="font-medium truncate">@{username || "김필"}</div>
-        <div className="flex items-center gap-1">
-          <svg
-            className="w-4 h-4 text-gray-400"
-            fill="currentColor"
-            viewBox="0 0 20 20"
+      <div className="p-4 space-y-2">
+        {post.tags.length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {post.tags.map((tag, idx) => (
+              <span
+                key={idx}
+                className="text-xs bg-rose-200 text-white rounded-full px-2 py-1"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+        {post.song && (
+          <p className="text-sm text-gray-700">
+            🎵 <strong>노래:</strong> {post.song}
+          </p>
+        )}
+        {post.description && (
+          <p className="text-sm text-gray-800">{post.description}</p>
+        )}
+        <div className="flex justify-end gap-2 mt-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onEdit}
+            className="hover:bg-gray-100"
           >
-            <path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
-          </svg>
-          <span>{likes ?? 0}</span>
+            <Pencil className="w-4 h-4 text-gray-600" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onDelete}
+            className="hover:bg-gray-100"
+          >
+            <Trash className="w-4 h-4 text-red-500" />
+          </Button>
         </div>
       </div>
     </div>
